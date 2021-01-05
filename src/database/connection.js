@@ -27,12 +27,6 @@ class DatabaseConnection {
 
   async connect () {
     try {
-      const uri = 'mongodb://localhost:27017'
-      this.client = new MongoClient(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
-
       console.log('connecting to database cluster')
       const isConnected = await this.client.isConnected()
       if (!isConnected) {

@@ -1,6 +1,6 @@
 module.exports = {
   bsonType: 'object',
-  required: ['photo', 'lat', 'lng', 'address', 'notes'],
+  required: ['photo', 'lat', 'lng', 'address'],
   properties: {
     photo: {
       bsonType: 'string',
@@ -20,7 +20,7 @@ module.exports = {
     },
     notes: {
       bsonType: 'string',
-      description: 'must be a string and is required'
+      description: 'must be a string'
     }
   }
 }
