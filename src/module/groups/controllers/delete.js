@@ -8,8 +8,7 @@ module.exports = async (req, res, next) => {
 
     // get own groups
     const ownGroups = await groups.find({
-      _id: ObjectID(id),
-      createdBy_id: ObjectID(req.body.user_id)
+      createdBy_id: req.user._id
     }).toArray()
 
     if (ownGroups.length > 1) {

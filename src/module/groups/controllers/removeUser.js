@@ -5,7 +5,6 @@ module.exports = async (req, res, next) => {
   try {
     const id = req.params.id
     const groups = databaseConnection.getDatabase().collection('groups')
-
     // check if user is a group owner
     const userIsOwner = await groups.find({
       _id: ObjectID(id),
@@ -21,17 +20,32 @@ module.exports = async (req, res, next) => {
       })
     }
 
-    const result = await groups.findOneAndUpdate({
-      _id: ObjectID(id)
-    }, {
-      $pull: {
-        users: {
-          _id: ObjectID(req.body.user_id)
+    let result
+    if (req.body.user_id) {
+      result = await groups.findOneAndUpdate({
+        _id: ObjectID(id)
+      }, {
+        $pull: {
+          users: {
+            _id: ObjectID(req.body.user_id)
+          }
         }
-      }
-    }, {
-      returnOriginal: false
-    })
+      }, {
+        returnOriginal: false
+      })
+    } else {
+      result = await groups.findOneAndUpdate({
+        _id: ObjectID(id)
+      }, {
+        $pull: {
+          users: {
+            email: req.body.email
+          }
+        }
+      }, {
+        returnOriginal: false
+      })
+    }
 
     res.status(200).json({
       data: result.value

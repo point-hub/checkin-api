@@ -8,18 +8,18 @@ module.exports = async (req, res, next) => {
 
     // get own groups
     const ownGroups = await groups.find({
-      _id: ObjectID(id),
-      createdBy_id: ObjectID(req.body.user_id)
+      createdBy_id: req.user._id
     }).toArray()
 
-    if (ownGroups >= 3) {
+    console.log(ownGroups)
+    if (ownGroups.length < 3) {
       const result = await groups.insertOne({
         createdAt: date,
         createdBy_id: req.user._id,
         name: req.body.name,
         status: 'active',
         users: [{
-          id: req.user._id,
+          _id: req.user._id,
           username: req.user.username,
           email: req.user.email,
           firstName: req.user.firstName,

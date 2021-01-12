@@ -17,13 +17,12 @@ module.exports = async (req, res, next) => {
       filter: { email: req.body.email },
       fields: '_id, username, firstName, lastName, email'
     })
-
     if (user.data && user.data.length !== 0) {
       user = user.data[0]
     } else {
+      user = {}
       user.email = req.body.email
     }
-
     if (userIsExistsInGroup.length === 0) {
       const result = await groups.findOneAndUpdate({
         _id: ObjectID(id)
@@ -32,7 +31,7 @@ module.exports = async (req, res, next) => {
           users: {
             ...user,
             invitedAt: new Date(),
-            invitedBy_id: ObjectID(req.user._id),
+            invitedBy_id: req.user._id,
             status: 'pending'
           }
         }

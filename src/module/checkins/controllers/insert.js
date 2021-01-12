@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
 
     const result = await collection.insertOne({
       createdAt: new Date(),
-      createdBy_id: ObjectID(req.user._id),
+      createdBy_id: req.user._id,
       group_id: ObjectID(req.body.group_id),
       photo: req.body.photo,
       lat: req.body.lat,
