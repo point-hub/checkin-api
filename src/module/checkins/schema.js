@@ -1,7 +1,19 @@
 module.exports = {
   bsonType: 'object',
-  required: ['photo', 'lat', 'lng', 'address'],
+  required: ['createdAt', 'createdBy_id', 'group_id', 'photo', 'lat', 'lng', 'address'],
   properties: {
+    createdAt: {
+      bsonType: 'date',
+      description: 'must be a string and is required'
+    },
+    createdBy_id: {
+      bsonType: 'objectId',
+      description: 'must be a objectId and is required'
+    },
+    group_id: {
+      bsonType: 'objectId',
+      description: 'must be a objectId and is required'
+    },
     photo: {
       bsonType: 'string',
       description: 'must be a string and is required'

@@ -26,7 +26,8 @@ passport.use(new JwtStrategy({
 }))
 
 passport.use(new LocalStrategy({
-  usernameField: 'email'
+  usernameField: 'email',
+  passwordField: 'password'
 }, async (username, password, done) => {
   try {
     // find correct user

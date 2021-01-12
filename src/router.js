@@ -2,14 +2,17 @@ const express = require('express')
 const logger = require('./util/logger')
 const authRoutes = require('./module/auth/router')
 const userRoutes = require('./module/users/router')
+const groupRoutes = require('./module/groups/router')
 const checkinRoutes = require('./module/checkins/router')
 const app = express()
 const datalize = require('datalize')
+require('./util/passport')
 
 datalize.set('autoValidate', true)
 
 app.use('/auth', authRoutes)
 app.use('/users', userRoutes)
+app.use('/groups', groupRoutes)
 app.use('/checkins', checkinRoutes)
 
 // send back a 404 error for any unknown api request

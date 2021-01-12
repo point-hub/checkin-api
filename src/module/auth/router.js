@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const controller = require('./controllers')
 const passport = require('passport')
-require('../../util/passport')
 const datalize = require('datalize')
 const field = datalize.field
 

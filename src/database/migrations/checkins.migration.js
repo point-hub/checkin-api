@@ -1,6 +1,6 @@
 const schema = require('../../module/checkins/schema')
 
-class UsersMigration {
+class CheckinMigration {
   async up (db) {
     try {
       await db.createCollection('checkins', {
@@ -22,4 +22,4 @@ class UsersMigration {
   }
 }
 
-module.exports = new UsersMigration()
+module.exports = new CheckinMigration()

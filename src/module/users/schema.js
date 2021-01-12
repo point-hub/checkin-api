@@ -2,6 +2,10 @@ module.exports = {
   bsonType: 'object',
   required: ['username', 'email', 'password'],
   properties: {
+    createdAt: {
+      bsonType: 'date',
+      description: 'must be a date and is required'
+    },
     username: {
       bsonType: 'string',
       minLength: 3,

@@ -3,7 +3,7 @@ const app = express()
 const morgan = require('morgan')
 const helmet = require('helmet')
 const xssClean = require('xss-clean')
-const cors = require('./middleware/cors.middleware')
+const cors = require('cors')
 const compression = require('compression')
 const mongoSanitize = require('express-mongo-sanitize')
 const databaseConnection = require('./database/connection')
@@ -48,7 +48,7 @@ app.use(xssClean())
 app.use(mongoSanitize())
 
 // cors
-app.use(cors)
+app.use(cors())
 
 // v1 api routes
 app.use('/v1', require('./router'))

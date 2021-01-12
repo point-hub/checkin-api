@@ -19,14 +19,14 @@ module.exports = {
   fields (fields = '', allowedFields = [], restrictedFields = []) {
     /**
      * Convert string to array
-     * ex: 'username, fname, lname => ['username', 'fname', 'lname']
+     * ex: 'username, firstName, lastName => ['username', 'firstName', 'lastName']
      */
     let arrayOfFields = fields.split(',')
     arrayOfFields = filterRestrictedFields(arrayOfFields, restrictedFields)
 
     /**
      * Convert array to object
-     * ex:['username', 'fname', 'lname'] to { username: 1, fname: 1, lname: 1 }
+     * ex:['username', 'firstName', 'lastName'] to { username: 1, firstName: 1, lastName: 1 }
      */
     const obj = {}
     for (let i = 0; i < arrayOfFields.length; i++) {

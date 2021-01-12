@@ -1,4 +1,5 @@
 const MongoClient = require('mongodb').MongoClient
+// const Logger = require('mongodb').Logger
 const migrate = require('./migrate')
 const database = require('../config/database')
 class DatabaseConnection {
@@ -6,23 +7,15 @@ class DatabaseConnection {
     let uri = ''
     if (process.env.NODE_ENV === 'production') {
       uri = `mongodb+srv://${database.username}:${database.password}@${database.host}/${database.name}?retryWrites=true&w=majority`
-      this.client = new MongoClient(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
     } else if (process.env.NODE_ENV === 'development') {
       uri = 'mongodb://localhost:27017'
-      this.client = new MongoClient(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
     } else if (process.env.NODE_ENV === 'test') {
       uri = 'mongodb://localhost:27017'
-      this.client = new MongoClient(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
     }
+    this.client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
   }
 
   async connect () {
@@ -31,6 +24,9 @@ class DatabaseConnection {
       const isConnected = await this.client.isConnected()
       if (!isConnected) {
         await this.client.connect()
+
+        // Set debug level
+        // Logger.setLevel('debug')
 
         if (process.env.NODE_ENV === 'test') {
           database.name += '-test'

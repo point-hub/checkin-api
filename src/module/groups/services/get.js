@@ -1,31 +1,27 @@
-const { ObjectID } = require('mongodb')
 const databaseConnection = require('../../../database/connection')
 const qsp = require('../../../util/queryStringParse')
 
 module.exports = async function (query) {
   try {
     // allowed fields to select
-    const allowedFields = ['createdAt', 'createdBy_id', 'photo', 'lat', 'lng', 'address', 'notes']
+    const allowedFields = ['name', 'status']
     // restricted fields should not return to user request
     const restrictedFields = []
 
-    const checkinsCollection = databaseConnection.getDatabase().collection('checkins')
+    const groupCollection = databaseConnection.getDatabase().collection('groups')
 
     const limit = Number(query.limit) || 10
     const page = Number(query.page) || 1
 
-    query.sort = '-createdAt'
-
-    const result = await checkinsCollection.find({
-      group_id: ObjectID(query.group_id)
-    })
+    const result = await groupCollection.find()
+      .filter(qsp.filter(query.filter))
       .skip(qsp.skip((page - 1) * limit))
       .limit(qsp.limit(limit))
       .sort(qsp.sort(query.sort))
       .project(qsp.fields(query.fields, allowedFields, restrictedFields))
       .toArray()
 
-    const totalDocument = await checkinsCollection.countDocuments(qsp.filter(query.filter))
+    const totalDocument = await groupCollection.countDocuments(qsp.filter(query.filter))
 
     return {
       page: page,
