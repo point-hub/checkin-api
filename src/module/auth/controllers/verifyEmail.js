@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
     })
 
     res.writeHead(302, {
-      Location: `http://${process.env.DOMAIN_APP}`
+      Location: `${process.env.DOMAIN_APP}`
     })
     res.end()
   } catch (error) {
