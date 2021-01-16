@@ -1,5 +1,4 @@
 const databaseConnection = require('../../../database/connection')
-const { ObjectID } = require('mongodb')
 
 module.exports = async (req, res, next) => {
   try {
@@ -11,7 +10,6 @@ module.exports = async (req, res, next) => {
       createdBy_id: req.user._id
     }).toArray()
 
-    console.log(ownGroups)
     if (ownGroups.length < 3) {
       const result = await groups.insertOne({
         createdAt: date,

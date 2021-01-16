@@ -37,18 +37,15 @@ passport.use(new LocalStrategy({
         email: username
       }
     })
-
-    // handle if user doens't exists
+    // handle if user doesn't exists
     if (user.length === 0) {
       return done(null, false)
     }
-
     // handle wrong password
     const isPasswordMatch = await bcrypt.compare(password, user[0].password)
     if (!isPasswordMatch) {
       return done(null, false)
     }
-
     // return user
     done(null, user)
   } catch (error) {
