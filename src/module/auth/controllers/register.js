@@ -58,13 +58,17 @@ module.exports = async (req, res, next) => {
       }]
     })
 
-    // const message = {
-    //   to: req.body.email,
-    //   subject: 'CHECKIN Registration ',
-    //   html: 'Welcome, ...'
-    // }
+    const verificationEmailUrl = `${process.env.DOMAIN_API}/v1/auth/verify-email?emailToken=${result.ops[0].emailVerificationCode}`
 
-    // mailer.send(message)
+    const message = {
+      to: req.body.email,
+      subject: 'Point Checkin Verification Account',
+      html: `Thanks for signin up, ${req.body.firstName} ${req.body.lastName}
+      <p>please click link below to verify your email address to get access to our apps.</p>
+      <a href="${verificationEmailUrl}">${verificationEmailUrl}</a>`
+    }
+
+    mailer.send(message)
 
     res.status(201).json({
       data: {

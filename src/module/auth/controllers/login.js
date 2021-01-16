@@ -11,6 +11,14 @@ module.exports = async (req, res, next) => {
       }
     })
 
+    if (users.data[0].emailVerified === false) {
+      return res.status(401).json({
+        error: {
+          message: 'Your email address is not verified'
+        }
+      })
+    }
+
     const groups = await Groups.get({
       filter: {
         'users.email': req.body.email
