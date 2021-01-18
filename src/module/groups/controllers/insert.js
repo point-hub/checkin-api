@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
       createdBy_id: req.user._id
     }).toArray()
 
-    if (ownGroups.length < 3) {
+    if (ownGroups.length < 10) {
       const result = await groups.insertOne({
         createdAt: date,
         createdBy_id: req.user._id,
@@ -30,7 +30,7 @@ module.exports = async (req, res, next) => {
     } else {
       res.status(422).json({
         error: {
-          message: 'max create 3 group per user'
+          message: 'max create 10 group per user'
         }
       })
     }
