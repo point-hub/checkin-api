@@ -20,7 +20,6 @@ class DatabaseConnection {
 
   async connect () {
     try {
-      console.log('connecting to database cluster')
       const isConnected = await this.client.isConnected()
       if (!isConnected) {
         await this.client.connect()
