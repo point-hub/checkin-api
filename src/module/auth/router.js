@@ -2,8 +2,6 @@ const express = require('express')
 const router = express.Router()
 const controller = require('./controllers')
 const passport = require('passport')
-const datalize = require('datalize')
-const field = datalize.field
 
 router.post('/login', passport.authenticate('local', { session: false, failWithError: true }),
   function (req, res, next) {
@@ -17,11 +15,7 @@ router.post('/login', passport.authenticate('local', { session: false, failWithE
     })
   }, controller.login)
 
-router.post('/register', datalize([
-  field('email').required().email(),
-  field('username').required(),
-  field('password').required()
-]), controller.register)
+router.post('/register', controller.register)
 
 // test jwt
 router.get('/secret', passport.authenticate('jwt', { session: false }), controller.secret)

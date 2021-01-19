@@ -7,7 +7,6 @@ const cors = require('cors')
 const compression = require('compression')
 const mongoSanitize = require('express-mongo-sanitize')
 const databaseConnection = require('./database/connection')
-const datalize = require('datalize')
 
 // gzip compressing can greatly decrease the size of the response body and hence increase the speed of a web app
 app.use(compression())
@@ -34,9 +33,6 @@ app.use(express.json())
 
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: false }))
-
-// add global error handling for validation
-datalize.set('autoValidate', true)
 
 // set security HTTP headers
 app.use(helmet())

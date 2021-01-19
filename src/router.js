@@ -5,10 +5,7 @@ const userRoutes = require('./module/users/router')
 const groupRoutes = require('./module/groups/router')
 const checkinRoutes = require('./module/checkins/router')
 const app = express()
-const datalize = require('datalize')
 require('./util/passport')
-
-datalize.set('autoValidate', true)
 
 app.use('/auth', authRoutes)
 app.use('/users', userRoutes)
@@ -24,26 +21,15 @@ app.use((req, res, next) => {
 
 // response handler api error
 app.use((error, req, res, next) => {
-  if (error instanceof datalize.Error) {
-    const err = Object.assign({
-      code: 422,
-      message: 'invalid data'
-    }, error.toJSON())
-    res.status(422).send(Object.assign({
-      status: 'failed',
-      error: err
-    }))
-  } else {
-    logger.error({ message: error.message })
-    res.status(error.status || 500)
-    res.json({
-      status: 'failed',
-      error: {
-        code: error.status,
-        message: error.message
-      }
-    })
-  }
+  logger.error({ message: error.message })
+  res.status(error.status || 500)
+  res.json({
+    status: 'failed',
+    error: {
+      code: error.status,
+      message: error.message
+    }
+  })
   next()
 })
 
