@@ -36,6 +36,7 @@
     "passport-local": "^1.0.0",
     "postmark": "^2.5.4",
     "socket.io": "^3.1.0",
+    "validatorjs": "^3.22.1",
     "winston": "^3.3.3",
     "xss-clean": "^0.1.1"
   },

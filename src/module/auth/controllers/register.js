@@ -4,9 +4,35 @@ const bcrypt = require('bcrypt')
 const crypto = require('crypto')
 const authConfig = require('../../../config/auth')
 const mailer = require('../../../util/mailer')
+const Validator = require('validatorjs')
+
+function requestValidation (data) {
+  const rules = {
+    firstName: 'required|string',
+    lastName: 'required|string',
+    username: 'required|alpha_num',
+    email: 'required|email',
+    password: 'required|min:8'
+  }
+
+  const validation = new Validator(data, rules)
+
+  return validation
+}
 
 module.exports = async (req, res, next) => {
   try {
+    const validation = requestValidation(req.body)
+
+    if (validation.fails()) {
+      return res.status(422).json({
+        error: {
+          message: 'Document validation invalid',
+          ...validation.errors
+        }
+      })
+    }
+
     const date = new Date()
     const users = databaseConnection.getDatabase().collection('users')
     // create new user
