@@ -4,6 +4,8 @@ const authRoutes = require('./module/auth/router')
 const userRoutes = require('./module/users/router')
 const groupRoutes = require('./module/groups/router')
 const checkinRoutes = require('./module/checkins/router')
+const errorHandler = require('./util/errorHandler')
+const ApiError = require('./util/ApiError')
 const app = express()
 require('./util/passport')
 
@@ -14,23 +16,10 @@ app.use('/checkins', checkinRoutes)
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
-  const error = new Error('Not found')
-  error.status = 404
-  next(error)
+  next(ApiError.notFound())
 })
 
 // response handler api error
-app.use((error, req, res, next) => {
-  logger.error({ message: error.message })
-  res.status(error.status || 500)
-  res.json({
-    status: 'failed',
-    error: {
-      code: error.status,
-      message: error.message
-    }
-  })
-  next()
-})
+app.use(errorHandler)
 
 module.exports = app

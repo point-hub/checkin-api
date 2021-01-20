@@ -5,8 +5,9 @@ const crypto = require('crypto')
 const authConfig = require('../../../config/auth')
 const mailer = require('../../../util/mailer')
 const Validator = require('validatorjs')
+const ApiError = require('../../../util/ApiError')
 
-function requestValidation (data) {
+function validateRequest (data) {
   const rules = {
     firstName: 'required|string',
     lastName: 'required|string',
@@ -17,32 +18,27 @@ function requestValidation (data) {
 
   const validation = new Validator(data, rules)
 
-  return validation
+  if (validation.fails()) {
+    throw ApiError.unprocessableEntity('Unprocessable Entity', validation.errors)
+  }
 }
 
 module.exports = async (req, res, next) => {
   try {
-    const validation = requestValidation(req.body)
+    validateRequest(req.body)
 
-    if (validation.fails()) {
-      return res.status(422).json({
-        error: {
-          message: 'Document validation invalid',
-          ...validation.errors
-        }
-      })
-    }
+    const { firstName, lastName, username, email, password } = req.body
 
     const date = new Date()
     const users = databaseConnection.getDatabase().collection('users')
     // create new user
-    const hashPassword = await bcrypt.hash(req.body.password, 10)
+    const hashPassword = await bcrypt.hash(password, 10)
     const emailVerficicationCode = crypto.randomBytes(20).toString('hex')
     const result = await users.insertOne({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      username: req.body.username,
-      email: req.body.email,
+      firstName: firstName,
+      lastName: lastName,
+      username: username.toLowerCase(),
+      email: email.toLowerCase(),
       password: hashPassword,
       // system generated value
       emailVerified: false,
@@ -72,24 +68,24 @@ module.exports = async (req, res, next) => {
     const groups = databaseConnection.getDatabase().collection('groups')
     const groupsResult = await groups.insertOne({
       createdAt: date,
-      createdBy_id: result.ops[0]._id,
-      name: `${result.ops[0].username}-${require('crypto').randomBytes(8).toString('hex')}`,
+      createdBy_id: data._id,
+      name: `${data.username}-${require('crypto').randomBytes(8).toString('hex')}`,
       status: 'active',
       users: [{
-        _id: result.ops[0]._id,
-        username: result.ops[0].username,
-        email: result.ops[0].email,
-        firstName: result.ops[0].firstName,
-        lastName: result.ops[0].lastName
+        _id: data._id,
+        username: data.username,
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName
       }]
     })
 
     const verificationEmailUrl = `${process.env.DOMAIN_API}/v1/auth/verify-email?emailToken=${result.ops[0].emailVerificationCode}`
 
     const message = {
-      to: req.body.email,
+      to: email,
       subject: 'Point Checkin Verification Account',
-      html: `Thanks for signin up, ${req.body.firstName} ${req.body.lastName}
+      html: `Thanks for signin up, ${firstName} ${lastName}
       <p>please click link below to verify your email address to get access to our apps.</p>
       <a href="${verificationEmailUrl}">${verificationEmailUrl}</a>`
     }
