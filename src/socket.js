@@ -3,14 +3,14 @@ const io = require('socket.io')()
 function init (server) {
   io.attach(server, {
     cors: {
-      origin: 'http://localhost:8080',
+      origin: process.env.DOMAIN_APP,
       methods: ['GET', 'POST']
     }
   })
 }
 
 io.on('connection', (socket) => {
-  io.emit('appVersion', '0.3.1')
+  io.emit('appVersion', '0.4.1')
 })
 
 module.exports = {
