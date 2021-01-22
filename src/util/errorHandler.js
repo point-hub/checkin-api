@@ -16,15 +16,19 @@ const errorHandler = function (error, req, res, next) {
 
   logger.error(error)
 
+  if (error.status === 401) {
+    return res.status(401).json({ error })
+  }
+
   if (error instanceof ApiError) {
-    return res.status(error.code).json(error)
+    return res.status(error.code).json({ error })
   }
 
   if (error instanceof MongoError) {
-    return res.status(500).json(error)
+    return res.status(500).json({ error })
   }
 
-  return res.status(500).json('something went wrong')
+  return res.status(500).json({ error: { message: 'something went wrong' } })
 }
 
 module.exports = errorHandler
