@@ -1,12 +1,12 @@
 const express = require('express')
 const app = express()
-const morgan = require('morgan')
 const helmet = require('helmet')
 const xssClean = require('xss-clean')
 const cors = require('cors')
 const compression = require('compression')
 const mongoSanitize = require('express-mongo-sanitize')
 const databaseConnection = require('./database/connection')
+const logger = require('./util/logger')
 
 // gzip compressing can greatly decrease the size of the response body and hence increase the speed of a web app
 app.use(compression())
@@ -18,14 +18,9 @@ if (process.env.NODE_ENV !== 'test') {
   })
 }
 
-process.on('unhandledRejection', (reason, promise) => {
-  console.log('Unhandled Rejection at:', promise, 'reason:', reason)
-  // Application specific logging, throwing an error, or other logic here
-})
-
 // logger
 if (process.env.NODE_ENV !== 'test') {
-  app.use(morgan('combined'))
+  app.use(require('morgan')('combined', { stream: logger.stream }))
 }
 
 // parse json request body

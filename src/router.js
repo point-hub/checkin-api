@@ -1,5 +1,4 @@
 const express = require('express')
-const logger = require('./util/logger')
 const authRoutes = require('./module/auth/router')
 const userRoutes = require('./module/users/router')
 const groupRoutes = require('./module/groups/router')
@@ -9,6 +8,7 @@ const ApiError = require('./util/ApiError')
 const app = express()
 require('./util/passport')
 
+app.use('/_health', require('./module/health/router'))
 app.use('/auth', authRoutes)
 app.use('/users', userRoutes)
 app.use('/groups', groupRoutes)
