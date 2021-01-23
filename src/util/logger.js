@@ -5,7 +5,7 @@ require('winston-daily-rotate-file')
 var errorTransport = new (transports.DailyRotateFile)({
   filename: 'logs/errors-%DATE%.log',
   datePattern: 'YYYY-MM-DD(HH)',
-  zippedArchive: true,
+  zippedArchive: false,
   maxSize: '20m',
   maxFiles: '7d',
   level: 'error',
@@ -17,7 +17,7 @@ var errorTransport = new (transports.DailyRotateFile)({
 var rejectionTransport = new (transports.DailyRotateFile)({
   filename: 'logs/rejections-%DATE%.log',
   datePattern: 'YYYY-MM-DD(HH)',
-  zippedArchive: true,
+  zippedArchive: false,
   maxSize: '20m',
   maxFiles: '7d',
   handleExceptions: false,
@@ -28,7 +28,7 @@ var rejectionTransport = new (transports.DailyRotateFile)({
 var exceptionTransport = new (transports.DailyRotateFile)({
   filename: 'logs/exceptions-%DATE%.log',
   datePattern: 'YYYY-MM-DD(HH)',
-  zippedArchive: true,
+  zippedArchive: false,
   maxSize: '20m',
   maxFiles: '7d',
   handleExceptions: true,
