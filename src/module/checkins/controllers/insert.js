@@ -13,6 +13,7 @@ module.exports = async (req, res, next) => {
       lat: req.body.lat,
       lng: req.body.lng,
       address: req.body.address,
+      addressComponents: req.body.addressComponents,
       notes: req.body.notes || '',
       user: {
         username: req.user.username,
