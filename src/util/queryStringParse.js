@@ -49,6 +49,11 @@ module.exports = {
   },
   // convert filter to mongodb aggregator
   filter (obj) {
+    if (obj === undefined) return null
+
+    if (obj && typeof obj === 'string') {
+      obj = JSON.parse(obj)
+    }
     /**
      * Query Selectors | Comparison
      *

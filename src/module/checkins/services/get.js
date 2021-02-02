@@ -16,21 +16,18 @@ module.exports = async function (query) {
 
     query.sort = '-createdAt'
 
-    if (typeof query.filter === 'string') {
-      query.filter = JSON.parse(query.filter)
-    }
+    var queryFilter = qsp.filter(query.filter)
+    queryFilter.group_id = ObjectID(queryFilter.group_id)
 
-    const result = await checkinsCollection.find({
-      group_id: ObjectID(query.group_id)
-    })
-      .filter(qsp.filter(query.filter))
+    const result = await checkinsCollection.find()
+      .filter(queryFilter)
       .skip(qsp.skip((page - 1) * limit))
       .limit(qsp.limit(limit))
       .sort(qsp.sort(query.sort))
       .project(qsp.fields(query.fields, allowedFields, restrictedFields))
       .toArray()
 
-    const totalDocument = await checkinsCollection.countDocuments(qsp.filter(query.filter))
+    const totalDocument = await checkinsCollection.countDocuments(queryFilter)
 
     return {
       page: page,
