@@ -98,7 +98,11 @@ module.exports = {
       ':type': '$type'
     }
 
-    return renameAggregator(obj, keysToUpdate)
+    const mutableObject = renameAggregator(obj, keysToUpdate)
+
+    return Object.keys(mutableObject)
+      .filter((k) => mutableObject[k] != null)
+      .reduce((a, k) => ({ ...a, [k]: mutableObject[k] }), {})
   },
   skip (val = 0) {
     return parseInt(val)

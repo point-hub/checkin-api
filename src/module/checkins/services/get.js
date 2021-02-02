@@ -16,9 +16,14 @@ module.exports = async function (query) {
 
     query.sort = '-createdAt'
 
+    if (typeof query.filter === 'string') {
+      query.filter = JSON.parse(query.filter)
+    }
+
     const result = await checkinsCollection.find({
       group_id: ObjectID(query.group_id)
     })
+      .filter(qsp.filter(query.filter))
       .skip(qsp.skip((page - 1) * limit))
       .limit(qsp.limit(limit))
       .sort(qsp.sort(query.sort))
