@@ -25,7 +25,16 @@ const errorHandler = function (error, req, res, next) {
   }
 
   if (error instanceof MongoError) {
-    return res.status(500).json({ error })
+    let message = ''
+    if (error.code === 11000) {
+      message = 'Duplicate value ' + JSON.stringify(error.keyPattern)
+    }
+    return res.status(422).json({
+      error: {
+        message: message,
+        errors: error
+      }
+    })
   }
 
   return res.status(500).json({ error: { message: 'something went wrong' } })
