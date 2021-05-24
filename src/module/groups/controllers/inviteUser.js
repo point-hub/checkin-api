@@ -6,22 +6,24 @@ module.exports = async (req, res, next) => {
   try {
     const id = req.params.id
 
+    const email = req.body.email.toLowerCase()
+
     const groups = databaseConnection.getDatabase().collection('groups')
 
     const userIsExistsInGroup = await groups.find({
       _id: ObjectID(id),
-      'users.email': req.body.email
+      'users.email': email
     }).toArray()
 
     let user = await User.get({
-      filter: { email: req.body.email },
+      filter: { email: email },
       fields: '_id, username, firstName, lastName, email'
     })
     if (user.data && user.data.length !== 0) {
       user = user.data[0]
     } else {
       user = {}
-      user.email = req.body.email
+      user.email = email
     }
     if (userIsExistsInGroup.length === 0) {
       const result = await groups.findOneAndUpdate({
