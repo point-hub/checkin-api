@@ -90,7 +90,8 @@ module.exports = async (req, res, next) => {
       <a href="${verificationEmailUrl}">${verificationEmailUrl}</a>`
     }
 
-    mailer.send(message)
+    // STOP EMAIL SERVICE TEMPORARY (UNTIL CAN VERIFY IT'S BOT OR NOT)
+    // mailer.send(message)
 
     res.status(201).json({
       data: {
