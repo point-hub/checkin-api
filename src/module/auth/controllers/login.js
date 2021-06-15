@@ -12,11 +12,12 @@ module.exports = async (req, res, next) => {
     })
 
     if (users.data[0].emailVerified === false) {
-      return res.status(401).json({
-        error: {
-          message: 'Your email address is not verified'
-        }
-      })
+      // TODO: Temporary disable email verification check until mail service fixed
+      // return res.status(401).json({
+      //   error: {
+      //     message: 'Your email address is not verified'
+      //   }
+      // })
     }
 
     const groups = await Groups.get({
