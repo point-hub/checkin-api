@@ -1,6 +1,6 @@
 {
   "name": "@point-hub/checkin-api",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "CHECKIN API",
   "main": "server.js",
   "engines": {

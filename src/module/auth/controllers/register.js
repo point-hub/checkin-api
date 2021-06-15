@@ -43,7 +43,8 @@ module.exports = async (req, res, next) => {
       // system generated value
       emailVerified: false,
       emailVerificationCode: emailVerficicationCode,
-      createdAt: date
+      createdAt: date,
+      registrationIp: req.ip
     })
 
     // sign new token
@@ -90,8 +91,7 @@ module.exports = async (req, res, next) => {
       <a href="${verificationEmailUrl}">${verificationEmailUrl}</a>`
     }
 
-    // STOP EMAIL SERVICE TEMPORARY (UNTIL CAN VERIFY IT'S BOT OR NOT)
-    // mailer.send(message)
+    mailer.send(message)
 
     res.status(201).json({
       data: {

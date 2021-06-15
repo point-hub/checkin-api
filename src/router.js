@@ -8,6 +8,14 @@ const ApiError = require('./util/ApiError')
 const app = express()
 require('./util/passport')
 
+/**
+ * Get Client IP
+ * 1. Edit nginx header like this "proxy_set_header X-Forwarded-For $remote_addr;"
+ * 2. Enable trust proxy on express app "app.set('trust proxy', true)"
+ * 3. Use "req.ip" to get Client IP
+ */
+app.set('trust proxy', true)
+
 app.use('/_health', require('./module/health/router'))
 app.use('/auth', authRoutes)
 app.use('/users', userRoutes)
