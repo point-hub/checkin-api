@@ -6,6 +6,7 @@ const authConfig = require('../../../config/auth')
 const mailer = require('../../../util/mailer')
 const Validator = require('validatorjs')
 const ApiError = require('../../../util/ApiError')
+const axios = require('axios').default
 
 function validateRequest (data) {
   const rules = {
@@ -26,6 +27,15 @@ function validateRequest (data) {
 module.exports = async (req, res, next) => {
   try {
     validateRequest(req.body)
+    const recaptchaResponse = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${GRECAPTCHA_SECRET}&response=${req.body.recaptcha}`)
+
+    if (!recaptchaResponse.data.success) {
+      return res.status(442).json({
+        error: {
+          message: 'Captcha validation failed'
+        }
+      })
+    }
 
     const { firstName, lastName, username, email, password } = req.body
 
