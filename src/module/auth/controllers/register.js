@@ -27,7 +27,7 @@ function validateRequest (data) {
 module.exports = async (req, res, next) => {
   try {
     validateRequest(req.body)
-    const recaptchaResponse = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${GRECAPTCHA_SECRET}&response=${req.body.recaptcha}`)
+    const recaptchaResponse = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.GRECAPTCHA_SECRET}&response=${req.body.recaptcha}`)
 
     if (!recaptchaResponse.data.success) {
       return res.status(442).json({
