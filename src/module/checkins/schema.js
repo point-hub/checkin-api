@@ -1,6 +1,6 @@
 module.exports = {
   bsonType: 'object',
-  required: ['createdAt', 'createdBy_id', 'group_id', 'photo', 'lat', 'lng', 'address'],
+  required: ['createdAt', 'createdBy_id', 'group_id', 'photo', 'lat', 'lng'],
   properties: {
     createdAt: {
       bsonType: 'date',
