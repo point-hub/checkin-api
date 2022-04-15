@@ -10,7 +10,7 @@ function init (server) {
 }
 
 io.on('connection', (socket) => {
-  io.emit('appVersion', '0.4.1')
+  io.emit('appVersion', '0.5.1')
 })
 
 module.exports = {
