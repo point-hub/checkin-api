@@ -29,13 +29,13 @@ module.exports = async (req, res, next) => {
     validateRequest(req.body)
     const recaptchaResponse = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.GRECAPTCHA_SECRET}&response=${req.body.recaptcha}`)
 
-    if (!recaptchaResponse.data.success) {
-      return res.status(442).json({
-        error: {
-          message: 'Captcha validation failed'
-        }
-      })
-    }
+    //if (!recaptchaResponse.data.success) {
+    //  return res.status(442).json({
+    //    error: {
+    //      message: 'Captcha validation failed'
+    //    }
+    //  })
+    //}
 
     const { firstName, lastName, username, email, password } = req.body
 
