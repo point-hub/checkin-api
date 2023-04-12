@@ -8,11 +8,13 @@ const ApiError = require('../../../util/ApiError')
 
 module.exports = async (req, res, next) => {
   try {
+    req.body.email = req.body.username
     const user = await Auth.get({
       filter: {
         email: req.body.username
       }
     })
+    console.log(user)
     // handle if user doesn't exists
     if (user.length === 0) {
       throw new ApiError(401)
