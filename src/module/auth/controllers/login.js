@@ -2,9 +2,27 @@ const authConfig = require('../../../config/auth')
 const JWT = require('jsonwebtoken')
 const Groups = require('../../groups/services')
 const Users = require('../../users/services')
+const Auth = require('../../auth/services')
+const bcrypt = require('bcrypt')
+const ApiError = require('../../../util/ApiError')
 
 module.exports = async (req, res, next) => {
   try {
+    const user = await Auth.get({
+      filter: {
+        email: req.body.username
+      }
+    })
+    // handle if user doesn't exists
+    if (user.length === 0) {
+      throw new ApiError(401)
+    }
+    // handle wrong password
+    const isPasswordMatch = await bcrypt.compare(req.body.password, user[0].password)
+    if (!isPasswordMatch) {
+      throw new ApiError(401)
+    }
+
     const users = await Users.get({
       filter: {
         email: req.body.email
