@@ -1,31 +1,31 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('./controllers')
-const passport = require('passport')
+const auth = require('../../middleware/auth')
 const who = require('../../util/who')
 
-router.get('/', passport.authenticate('jwt', { session: false }), who, controller.get)
+router.get('/', auth, who, controller.get)
 
-router.get('/:id', passport.authenticate('jwt', { session: false }), who, controller.find)
+router.get('/:id', auth, who, controller.find)
 
-router.post('/', passport.authenticate('jwt', { session: false }), who, controller.insert)
+router.post('/', auth, who, controller.insert)
 
-router.put('/:id', passport.authenticate('jwt', { session: false }), who, controller.update)
+router.put('/:id', auth, who, controller.update)
 
-router.put('/:id/suspend', passport.authenticate('jwt', { session: false }), who, controller.suspend)
+router.put('/:id/suspend', auth, who, controller.suspend)
 
-router.put('/:id/unsuspend', passport.authenticate('jwt', { session: false }), who, controller.unsuspend)
+router.put('/:id/unsuspend', auth, who, controller.unsuspend)
 
-router.put('/:id/inviteUser', passport.authenticate('jwt', { session: false }), who, controller.inviteUser)
+router.put('/:id/inviteUser', auth, who, controller.inviteUser)
 
-router.put('/:id/acceptInvite', passport.authenticate('jwt', { session: false }), who, controller.acceptInvite)
+router.put('/:id/acceptInvite', auth, who, controller.acceptInvite)
 
-router.put('/:id/declineInvite', passport.authenticate('jwt', { session: false }), who, controller.declineInvite)
+router.put('/:id/declineInvite', auth, who, controller.declineInvite)
 
-router.put('/:id/addUser', passport.authenticate('jwt', { session: false }), who, controller.addUser)
+router.put('/:id/addUser', auth, who, controller.addUser)
 
-router.put('/:id/removeUser', passport.authenticate('jwt', { session: false }), who, controller.removeUser)
+router.put('/:id/removeUser', auth, who, controller.removeUser)
 
-router.delete('/:id', passport.authenticate('jwt', { session: false }), who, controller.delete)
+router.delete('/:id', auth, who, controller.delete)
 
 module.exports = router

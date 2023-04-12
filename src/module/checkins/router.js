@@ -1,17 +1,17 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('./controllers')
-const passport = require('passport')
 const who = require('../../util/who')
+const auth = require('../../middleware/auth')
 
-router.get('/', passport.authenticate('jwt', { session: false }), who, controller.get)
+router.get('/', auth, controller.get)
 
-router.get('/:id', passport.authenticate('jwt', { session: false }), who, controller.find)
+router.get('/:id', auth, who, controller.find)
 
-router.post('/', passport.authenticate('jwt', { session: false }), who, controller.insert)
+router.post('/', auth, who, controller.insert)
 
-router.put('/:id', passport.authenticate('jwt', { session: false }), who, controller.update)
+router.put('/:id', auth, who, controller.update)
 
-router.delete('/:id', passport.authenticate('jwt', { session: false }), who, controller.delete)
+router.delete('/:id', auth, who, controller.delete)
 
 module.exports = router
